@@ -15,10 +15,10 @@ import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider'
 import { DatePicker } from '@mui/x-date-pickers/DatePicker'
 import { useState } from "react"
 import { useForm } from "react-hook-form"
-import { db } from "../utils/firebase.js"
+import { db } from "../../utils/firebase.js"
 import { collection, addDoc } from 'firebase/firestore'
 
-const Form = () => {
+const LoginForm = () => {
     const [ visible, setVisible ] = useState(false)
     const [ visibleTwo, setVisibleTwo ] = useState(false)
     
@@ -282,4 +282,4 @@ const Form = () => {
     )
 }
 
-export default Form
+export default LoginForm
