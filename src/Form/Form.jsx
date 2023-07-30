@@ -1,4 +1,3 @@
-import { useEffect } from 'react'
 import VisibilityIcon from '@mui/icons-material/Visibility'
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff'
 import SendIcon from '@mui/icons-material/Send'
@@ -15,22 +14,33 @@ import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider'
 import { DatePicker } from '@mui/x-date-pickers/DatePicker'
 import { useState } from "react"
-import { useForm } from "react-hook-form";
+import { useForm } from "react-hook-form"
+import { db } from "../utils/firebase.js"
+import { collection, addDoc } from 'firebase/firestore'
 
 const Form = () => {
     const [ visible, setVisible ] = useState(false)
     const [ visibleTwo, setVisibleTwo ] = useState(false)
+    
     const { 
         register,
         handleSubmit, 
         formState: { errors }, 
         watch,
-        setValue 
+        setValue,
+        reset 
     } = useForm();
 
     const onSubmit = handleSubmit((data) => {
-        console.log(data)
+        delete data.repeatPassword
+        const ref = collection(db, "usuarios")
+        addDoc(ref, data)
+            .then((doc) => {
+                console.log(doc)
+            })
+        reset()
     })
+
     const handlePassword = () => {
         if(visible) {
             setVisible(false)
@@ -38,6 +48,7 @@ const Form = () => {
             setVisible(true)
         }
     }
+
     const handleRepeatPassword = () => {
         if(visibleTwo) {
             setVisibleTwo(false)
@@ -80,7 +91,7 @@ const Form = () => {
                     >
                         <TextField
                             { 
-                                ...register("name",
+                                ...register("nombre",
                                 {
                                     required: {
                                         value: true,
@@ -96,9 +107,9 @@ const Form = () => {
                                     }
                                 })
                             } 
-                            name="name"
+                            name="nombre"
                             autoComplete='off'
-                            helperText= { errors.name && `${errors.name.message}`}
+                            helperText= { errors.nombre && `${errors.nombre.message}`}
                             label="Nombre"
                             sx={{
                                 flexGrow: 1,
@@ -108,7 +119,7 @@ const Form = () => {
                         />
                         <TextField 
                             { 
-                                ...register("lastName",
+                                ...register("apellido",
                                 {
                                     required: {
                                         value: true,
@@ -124,9 +135,9 @@ const Form = () => {
                                     }
                                 })
                             } 
-                            name="lastName"
+                            name="apellido"
                             autoComplete='off'
-                            helperText={errors.lastName && `${errors.lastName.message}`}
+                            helperText={errors.apellido && `${errors.apellido.message}`}
                             label="Apellido"
                             sx={{
                                 flexGrow: 1,
@@ -137,7 +148,7 @@ const Form = () => {
                     </Box>
                     <TextField  
                         {
-                            ...register("password",
+                            ...register("contraseña",
                             {
                                 required: {
                                     value: true,
@@ -153,9 +164,9 @@ const Form = () => {
                                 }
                             }) 
                         } 
-                        name="password"
+                        name="contraseña"
                         autoComplete='off'
-                        helperText={errors.password && `${errors.password.message}`}
+                        helperText={errors.contraseña && `${errors.contraseña.message}`}
                         label="Contraseña"
                         type={ visible ? "text" : "password"}
                         sx={{
@@ -191,7 +202,7 @@ const Form = () => {
                                     message: "La contraseña debe tener menos de 16 caracteres."
                                 },
                                 validate: (value) => {
-                                    if(value === watch().password) {
+                                    if(value === watch().contraseña) {
                                         return true 
                                     } else {
                                         return "Las contraseñas no coinciden."
@@ -222,7 +233,7 @@ const Form = () => {
                     />
                     <TextField 
                         { 
-                            ...register("email",
+                            ...register("correo",
                             {
                                 pattern: {
                                     value: /^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$/,
@@ -230,9 +241,9 @@ const Form = () => {
                                 }
                             })
                         }
-                        name= "email"
+                        name= "correo"
                         autoComplete='off'
-                        helperText={ errors.email && `${errors.email.message}` }
+                        helperText={ errors.correo && `${errors.correo.message}` }
                         label="Correo"
                         sx={{
                             mx: 4,
@@ -246,7 +257,7 @@ const Form = () => {
                                 mb: 4
                             }}
                             onChange= { (newDateValue) => {
-                                    setValue("birthday", `${newDateValue.$D}/${newDateValue.$M + 1}/${newDateValue.$y}`)
+                                    setValue("nacimiento", `${newDateValue.$D}/${newDateValue.$M + 1}/${newDateValue.$y}`)
                                 } 
                             }
                             name="birthday"
