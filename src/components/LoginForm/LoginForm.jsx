@@ -10,50 +10,85 @@ import {
     IconButton,
     Typography
 } from "@mui/material"
-import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
-import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider'
-import { DatePicker } from '@mui/x-date-pickers/DatePicker'
 import { useState } from "react"
 import { useForm } from "react-hook-form"
 import { db } from "../../utils/firebase.js"
-import { collection, addDoc } from 'firebase/firestore'
+import { collection, getDocs } from 'firebase/firestore'
 
 const LoginForm = () => {
     const [ visible, setVisible ] = useState(false)
-    const [ visibleTwo, setVisibleTwo ] = useState(false)
-    
+    const [ logUser, setLogUser ] = useState(null)
+
     const { 
         register,
         handleSubmit, 
+        reset,
         formState: { errors }, 
-        watch,
-        setValue,
-        reset 
     } = useForm();
 
     const onSubmit = handleSubmit((data) => {
-        delete data.repeatPassword
+        if(logUser !== null) {
+            if (data.correo === logUser.correo && data.contraseña === logUser.contraseña) {
+                console.log("Ya estas conectado con esa cuenta.")
+                return
+            }
+        }
         const ref = collection(db, "usuarios")
-        addDoc(ref, data)
-            .then((doc) => {
-                console.log(doc)
+        const docs = [] 
+        getDocs(ref)
+            .then((snaps)=>{
+                snaps.docs.map((doc) => {
+                    docs.push(doc.data())
+                })
             })
-        reset()
+            .then(()=>{
+                if(logUser === null){
+                    const newUser = docs.filter((document) => {
+                        if (data.correo === document.correo && data.contraseña === document.contraseña) {
+                            return document
+                        }           
+                    })
+                    console.log(newUser)
+                    if(newUser.length === 0) {
+                        console.log("La cuenta que has ingresado no existe.")
+                    } else {
+                        setLogUser(newUser[0])
+                        console.log("Bienvenido "+newUser[0].nombre+"!")
+                    }
+                }
+            })
     })
 
+    // const onSubmit = handleSubmit((data) => {
+    //     console.log(logUser)
+    //     if(logUser?.correo === data.correo && logUser?.contraseña === data.contraseña) {
+    //         console.log("Ya estas loggeado")
+    //         reset()
+    //         return
+    //     }
+    //     const ref = collection(db, "usuarios")
+    //     getDocs(ref)
+    //         .then((snaps)=>{
+    //             snaps.docs.map((doc) => {
+    //                 if(doc.data().correo === data.correo && doc.data().contraseña === data.contraseña){
+    //                     console.log(doc.data())
+    //                     setLogUser(doc.data())
+    //                     console.log(`Ingresaste sesión ${logUser.nombre}`)
+    //                 }
+    //             })
+    //         })
+    //         if(logUser === null) {
+    //             console.log("Contraseña o correo incorrectos")
+    //         } else {
+    //             console.log(`Ingresaste sesión ${logUser.nombre}`)
+    //         }
+    //     reset()
+    // })
     const handlePassword = () => {
         if(visible) {
             setVisible(false)
         } else {
             setVisible(true)
-        }
-    }
-
-    const handleRepeatPassword = () => {
-        if(visibleTwo) {
-            setVisibleTwo(false)
-        } else {
-            setVisibleTwo(true)
         }
     }
     
@@ -72,7 +107,7 @@ const LoginForm = () => {
                         ml:4
                     }}
                 >
-                    Registrate
+                    Inicia sesión
                 </Typography>
                 <Box
                     noValidate
@@ -84,68 +119,25 @@ const LoginForm = () => {
                         flexDirection: "column",
                     }}
                 >
-                    <Box
+                    <TextField 
+                        { 
+                            ...register("correo",
+                            {
+                                pattern: {
+                                    value: /^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$/,
+                                    message: "Correo no valido."
+                                }
+                            })
+                        }
+                        name= "correo"
+                        autoComplete='off'
+                        helperText={ errors.correo && `${errors.correo.message}` }
+                        label="Correo"
                         sx={{
-                            display: "flex"                            
+                            mx: 4,
+                            mb: 4
                         }}
-                    >
-                        <TextField
-                            { 
-                                ...register("nombre",
-                                {
-                                    required: {
-                                        value: true,
-                                        message: "Debes ingresar un nombre."
-                                    },
-                                    minLength: {
-                                        value: 3,
-                                        message: "El nombre debe contener al menos tres caracteres."
-                                    },
-                                    maxLength: {
-                                        value: 20,
-                                        message: "El nombre no puede sobrepasar los veinte caracteres."
-                                    }
-                                })
-                            } 
-                            name="nombre"
-                            autoComplete='off'
-                            helperText= { errors.nombre && `${errors.nombre.message}`}
-                            label="Nombre"
-                            sx={{
-                                flexGrow: 1,
-                                mr: 4,
-                                ml: 4,
-                            }}
-                        />
-                        <TextField 
-                            { 
-                                ...register("apellido",
-                                {
-                                    required: {
-                                        value: true,
-                                        message: "Debes ingresar un apellido."
-                                    },
-                                    minLength: {
-                                        value: 3,
-                                        message: "El apellido debe contener al menos tres caracteres."
-                                    },
-                                    maxLength: {
-                                        value: 20,
-                                        message: "El apellido no puede sobrepasar los veinte caracteres."
-                                    }
-                                })
-                            } 
-                            name="apellido"
-                            autoComplete='off'
-                            helperText={errors.apellido && `${errors.apellido.message}`}
-                            label="Apellido"
-                            sx={{
-                                flexGrow: 1,
-                                mr: 4,
-                                mb: 4
-                            }}
-                        />
-                    </Box>
+                    />
                     <TextField  
                         {
                             ...register("contraseña",
@@ -185,86 +177,6 @@ const LoginForm = () => {
                             )
                         }}
                     />
-                    <TextField  
-                        { 
-                            ...register("repeatPassword",
-                            {
-                                required: {
-                                    value: true,
-                                    message: "Debes ingresar la contraseña."
-                                },
-                                minLength: {
-                                    value: 4,
-                                    message: "La contraseña debe constar de al menos cuatro caracteres."
-                                },
-                                maxLength: {
-                                    value: 16,
-                                    message: "La contraseña debe tener menos de 16 caracteres."
-                                },
-                                validate: (value) => {
-                                    if(value === watch().contraseña) {
-                                        return true 
-                                    } else {
-                                        return "Las contraseñas no coinciden."
-                                    }
-                                }
-                            })
-                        }
-                        name= "repeatPassword"
-                        autoComplete='off'
-                        helperText={errors.repeatPassword && `${errors.repeatPassword.message}`}
-                        label="Repite la contraseña"
-                        type={ visibleTwo ? "text" : "password"}
-                        sx={{
-                            mx: 4,
-                            mb: 4,
-                        }}
-                        InputProps={{
-                            endAdornment: (
-                                <InputAdornment 
-                                position="end"
-                                >
-                                    <IconButton onClick={handleRepeatPassword}>
-                                        { visibleTwo ? <VisibilityOffIcon /> : <VisibilityIcon /> }
-                                    </IconButton>
-                                </InputAdornment>
-                            )
-                        }}
-                    />
-                    <TextField 
-                        { 
-                            ...register("correo",
-                            {
-                                pattern: {
-                                    value: /^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$/,
-                                    message: "Correo no valido."
-                                }
-                            })
-                        }
-                        name= "correo"
-                        autoComplete='off'
-                        helperText={ errors.correo && `${errors.correo.message}` }
-                        label="Correo"
-                        sx={{
-                            mx: 4,
-                            mb: 4
-                        }}
-                    />
-                    <LocalizationProvider dateAdapter={AdapterDayjs}>
-                        <DatePicker  
-                            sx={{
-                                mx: 4,
-                                mb: 4
-                            }}
-                            onChange= { (newDateValue) => {
-                                    setValue("nacimiento", `${newDateValue.$D}/${newDateValue.$M + 1}/${newDateValue.$y}`)
-                                } 
-                            }
-                            name="birthday"
-                            label="Fecha de nacimiento"
-                            slotProps={{ textField: { variant: 'outlined' } }}
-                        />
-                    </LocalizationProvider>
                     <Button
                         endIcon={<SendIcon />}
                         type="submit"
@@ -275,7 +187,7 @@ const LoginForm = () => {
                         }}
                         size='large'
                     >
-                        Send
+                        Enviar
                     </Button>
                 </Box>
             </Paper>

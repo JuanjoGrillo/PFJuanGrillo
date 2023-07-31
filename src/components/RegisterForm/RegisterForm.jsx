@@ -275,7 +275,7 @@ const RegisterForm = () => {
                         }}
                         size='large'
                     >
-                        Send
+                        Enviar
                     </Button>
                 </Box>
             </Paper>
