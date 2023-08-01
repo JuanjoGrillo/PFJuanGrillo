@@ -16,6 +16,8 @@ import {
   RouterProvider
 } from 'react-router-dom'
 
+import { AuthContext } from "./context/AuthContext"
+import { Protected } from "./components/Protected/Protected"
 import Layout from './components/Layout/Layout'
 import Home from './components/Home/Home'
 import StoreLayout from './components/StoreLayout/StoreLayout'
@@ -29,7 +31,7 @@ const route = createBrowserRouter(
   createRoutesFromElements(
     <Route path="/" element={ <Layout /> }>
       <Route index element={ <Home /> } />
-      <Route path='tienda' element={ <StoreLayout /> }>
+      <Route path='tienda' element={ <Protected><StoreLayout /></Protected> }>
         <Route index element={ <ItemListContainer /> } />
         <Route path=':categoria' element={ <ItemListContainer /> } />
         <Route path=':categoria/:id' element={ <ItemDetail /> } />
@@ -44,7 +46,9 @@ const route = createBrowserRouter(
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
     <ThemeProvider theme={theme}>
-      <RouterProvider router={route} />
+      <AuthContext>
+        <RouterProvider router={route} />
+      </AuthContext>
     </ThemeProvider>
   </React.StrictMode>,
 )

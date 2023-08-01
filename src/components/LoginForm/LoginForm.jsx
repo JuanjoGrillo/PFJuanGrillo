@@ -10,80 +10,70 @@ import {
     IconButton,
     Typography
 } from "@mui/material"
-import { useState } from "react"
+import { useState, useContext } from "react"
 import { useForm } from "react-hook-form"
-import { db } from "../../utils/firebase.js"
-import { collection, getDocs } from 'firebase/firestore'
+// import { db } from "../../utils/firebase.js"
+// import { collection, getDocs } from 'firebase/firestore'
+import { auth, provider } from '../../utils/firebase.js'
+import { signInWithEmailAndPassword } from "firebase/auth"
+import { useNavigate } from "react-router-dom"
+import { Context } from "../../context/AuthContext.jsx"
 
 const LoginForm = () => {
     const [ visible, setVisible ] = useState(false)
-    const [ logUser, setLogUser ] = useState(null)
-
+    // const [ logUser, setLogUser ] = useState(null)
+    // const navigate = useNavigate()
     const { 
         register,
         handleSubmit, 
         reset,
         formState: { errors }, 
     } = useForm();
+    const { user } = useContext(Context)
 
     const onSubmit = handleSubmit((data) => {
-        if(logUser !== null) {
-            if (data.correo === logUser.correo && data.contraseña === logUser.contraseña) {
-                console.log("Ya estas conectado con esa cuenta.")
-                return
-            }
-        }
-        const ref = collection(db, "usuarios")
-        const docs = [] 
-        getDocs(ref)
-            .then((snaps)=>{
-                snaps.docs.map((doc) => {
-                    docs.push(doc.data())
-                })
+        signInWithEmailAndPassword(auth, data.correo, data.contraseña)
+            .then(() => {
+                reset()
+                console.log(user.email)
             })
-            .then(()=>{
-                if(logUser === null){
-                    const newUser = docs.filter((document) => {
-                        if (data.correo === document.correo && data.contraseña === document.contraseña) {
-                            return document
-                        }           
-                    })
-                    console.log(newUser)
-                    if(newUser.length === 0) {
-                        console.log("La cuenta que has ingresado no existe.")
-                    } else {
-                        setLogUser(newUser[0])
-                        console.log("Bienvenido "+newUser[0].nombre+"!")
-                    }
-                }
+            .catch((error) => {
+                console.log(error)
             })
+        // if(logUser !== null) {
+        //     if (data.correo === logUser.correo && data.contraseña === logUser.contraseña) {
+        //         console.log("Ya estas conectado con esa cuenta.")
+        //         reset()
+        //         return
+        //     }
+        // }
+        // const ref = collection(db, "usuarios")
+        // const docs = [] 
+        // getDocs(ref)
+        //     .then((snaps)=>{
+        //         snaps.docs.map((doc) => {
+        //             docs.push(doc.data())
+        //         })
+        //     })
+        //     .then(()=>{
+        //         if(logUser === null){
+        //             const newUser = docs.filter((document) => {
+        //                 if (data.correo === document.correo && data.contraseña === document.contraseña) {
+        //                     return document
+        //                 }           
+        //             })
+        //             console.log(newUser)
+        //             if(newUser.length === 0) {
+        //                 console.log("La cuenta que has ingresado no existe.")
+        //             } else {
+        //                 setLogUser(newUser[0])
+        //                 console.log("Bienvenido "+newUser[0].nombre+"!")
+        //                 reset()
+        //             }
+        //         }
+        //     })
     })
 
-    // const onSubmit = handleSubmit((data) => {
-    //     console.log(logUser)
-    //     if(logUser?.correo === data.correo && logUser?.contraseña === data.contraseña) {
-    //         console.log("Ya estas loggeado")
-    //         reset()
-    //         return
-    //     }
-    //     const ref = collection(db, "usuarios")
-    //     getDocs(ref)
-    //         .then((snaps)=>{
-    //             snaps.docs.map((doc) => {
-    //                 if(doc.data().correo === data.correo && doc.data().contraseña === data.contraseña){
-    //                     console.log(doc.data())
-    //                     setLogUser(doc.data())
-    //                     console.log(`Ingresaste sesión ${logUser.nombre}`)
-    //                 }
-    //             })
-    //         })
-    //         if(logUser === null) {
-    //             console.log("Contraseña o correo incorrectos")
-    //         } else {
-    //             console.log(`Ingresaste sesión ${logUser.nombre}`)
-    //         }
-    //     reset()
-    // })
     const handlePassword = () => {
         if(visible) {
             setVisible(false)
@@ -189,6 +179,13 @@ const LoginForm = () => {
                     >
                         Enviar
                     </Button>
+                    {/* <Button
+                        type='button'
+                        variant='outlined'
+                        onClick={handleGoogleButton}
+                    > 
+                        Ingresar con Google
+                    </Button> */}
                 </Box>
             </Paper>
     )

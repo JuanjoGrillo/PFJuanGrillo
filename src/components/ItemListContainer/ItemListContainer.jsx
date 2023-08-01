@@ -4,6 +4,9 @@ const ItemListContainer = () => {
 
     const { categoria } = useParams()
 
+
+    // Aca es donde se decide si desplegar todos los items o 
+    // establecer un filtro 
     if(categoria) {
         console.log("categoria")
     } else {
@@ -13,6 +16,7 @@ const ItemListContainer = () => {
     return(
         <>
             <p>ItemListContainer</p>
+            <button onClick={handleSignOut}>Sign out</button>
         </>
     )
 }

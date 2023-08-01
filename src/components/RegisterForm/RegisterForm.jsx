@@ -10,18 +10,21 @@ import {
     IconButton,
     Typography
 } from "@mui/material"
+
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider'
 import { DatePicker } from '@mui/x-date-pickers/DatePicker'
-import { useState } from "react"
+import { useContext, useState } from "react"
 import { useForm } from "react-hook-form"
-import { db } from "../../utils/firebase.js"
-import { collection, addDoc } from 'firebase/firestore'
+import { auth } from "../../utils/firebase.js"
+import { createUserWithEmailAndPassword, signInWithEmailAndPassword, updateProfile } from "firebase/auth"
+import { Context } from "../../context/AuthContext.jsx"
 
 const RegisterForm = () => {
     const [ visible, setVisible ] = useState(false)
     const [ visibleTwo, setVisibleTwo ] = useState(false)
-    
+    const { setUser } = useContext(Context)
+
     const { 
         register,
         handleSubmit, 
@@ -32,13 +35,26 @@ const RegisterForm = () => {
     } = useForm();
 
     const onSubmit = handleSubmit((data) => {
-        delete data.repeatPassword
-        const ref = collection(db, "usuarios")
-        addDoc(ref, data)
-            .then((doc) => {
-                console.log(doc)
+        createUserWithEmailAndPassword(auth, data.correo, data.contraseña)
+            .then(() => {
+                signInWithEmailAndPassword(auth, data.correo, data.contraseña)
+                    .then(()=>{
+                        updateProfile(auth.currentUser, {
+                            displayName: data.nombre
+                        })
+                            .then(()=>{
+                                setUser(auth.currentUser)
+                                reset()
+                            })
+                            .catch((error)=>{
+                                window.alert("Algo salio mal! Intentalo de nuevo.")
+                            })
+                    })
+                
             })
-        reset()
+            .catch((error)=>{
+                console.log(error)
+            })
     })
 
     const handlePassword = () => {
