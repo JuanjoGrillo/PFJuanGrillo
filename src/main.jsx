@@ -17,27 +17,26 @@ import {
 } from 'react-router-dom'
 
 import { AuthContext } from "./context/AuthContext"
-import { Protected } from "./components/Protected/Protected"
 import Layout from './components/Layout/Layout'
-import Home from './components/Home/Home'
-import StoreLayout from './components/StoreLayout/StoreLayout'
 import ItemListContainer from './components/ItemListContainer/ItemListContainer'
 import ItemDetail from './components/ItemDetail/ItemDetail'
 import Cart from './components/Cart/Cart'
 import Checkout from './components/Checkout/Checkout'
 import ErrorPage from './components/ErrorPage/ErrorPage'
+import RegisterForm from './components/RegisterForm/RegisterForm'
+import LoginForm from './components/LoginForm/LoginForm'
+
 
 const route = createBrowserRouter(
   createRoutesFromElements(
     <Route path="/" element={ <Layout /> }>
-      <Route index element={ <Home /> } />
-      <Route path='tienda' element={ <Protected><StoreLayout /></Protected> }>
-        <Route index element={ <ItemListContainer /> } />
-        <Route path=':categoria' element={ <ItemListContainer /> } />
-        <Route path=':categoria/:id' element={ <ItemDetail /> } />
-        <Route path='carrito' element={ <Cart /> } />
-        <Route path='compra' element={ <Checkout /> } />
-      </Route>
+      <Route path="login" element={ <LoginForm /> } />
+      <Route path="registro" element={ <RegisterForm /> } />
+      <Route path='tienda' element={ <ItemListContainer /> } />
+      <Route path='tienda/:categoria' element={ <ItemListContainer /> } />
+      <Route path='tienda/:categoria/:id' element={ <ItemDetail /> } />
+      <Route path='carrito' element={ <Cart /> } />
+      <Route path='compra' element={ <Checkout /> } />
       <Route path='*' element={ <ErrorPage /> } />
     </Route>
   )

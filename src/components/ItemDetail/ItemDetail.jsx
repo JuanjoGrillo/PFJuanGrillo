@@ -1,15 +1,17 @@
-import { useParams } from "react-router-dom"
+import { Container } from "@mui/material"
 
 const ItemDetail = () => {
-    
-    const { categoria, id } = useParams()
 
-    console.log(categoria, id)
-
-    return(
-        <>
-            <p>ItemDetail</p>
-        </>
+    return(          
+        <Container
+            disableGutters
+            maxWidth= {false}
+            sx={{
+                width: "inherit",
+                flexGrow: 1,
+            }}
+        >
+        </Container>    
     )
 }
 

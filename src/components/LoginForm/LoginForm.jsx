@@ -10,19 +10,19 @@ import {
     IconButton,
     Typography
 } from "@mui/material"
-import { useState, useContext } from "react"
+import { 
+    useState,
+    useContext
+} from "react"
 import { useForm } from "react-hook-form"
-// import { db } from "../../utils/firebase.js"
-// import { collection, getDocs } from 'firebase/firestore'
-import { auth, provider } from '../../utils/firebase.js'
+import { auth } from '../../utils/firebase.js'
 import { signInWithEmailAndPassword } from "firebase/auth"
-import { useNavigate } from "react-router-dom"
+import { NavLink } from "react-router-dom"
 import { Context } from "../../context/AuthContext.jsx"
 
 const LoginForm = () => {
     const [ visible, setVisible ] = useState(false)
-    // const [ logUser, setLogUser ] = useState(null)
-    // const navigate = useNavigate()
+
     const { 
         register,
         handleSubmit, 
@@ -40,38 +40,6 @@ const LoginForm = () => {
             .catch((error) => {
                 console.log(error)
             })
-        // if(logUser !== null) {
-        //     if (data.correo === logUser.correo && data.contraseña === logUser.contraseña) {
-        //         console.log("Ya estas conectado con esa cuenta.")
-        //         reset()
-        //         return
-        //     }
-        // }
-        // const ref = collection(db, "usuarios")
-        // const docs = [] 
-        // getDocs(ref)
-        //     .then((snaps)=>{
-        //         snaps.docs.map((doc) => {
-        //             docs.push(doc.data())
-        //         })
-        //     })
-        //     .then(()=>{
-        //         if(logUser === null){
-        //             const newUser = docs.filter((document) => {
-        //                 if (data.correo === document.correo && data.contraseña === document.contraseña) {
-        //                     return document
-        //                 }           
-        //             })
-        //             console.log(newUser)
-        //             if(newUser.length === 0) {
-        //                 console.log("La cuenta que has ingresado no existe.")
-        //             } else {
-        //                 setLogUser(newUser[0])
-        //                 console.log("Bienvenido "+newUser[0].nombre+"!")
-        //                 reset()
-        //             }
-        //         }
-        //     })
     })
 
     const handlePassword = () => {
@@ -92,7 +60,7 @@ const LoginForm = () => {
                 <Typography
                     variant='h2'
                     sx={{
-                        textAlign: "left",
+                        textAlign: "center",
                         mb: 3,
                         ml:4
                     }}
@@ -179,13 +147,26 @@ const LoginForm = () => {
                     >
                         Enviar
                     </Button>
-                    {/* <Button
-                        type='button'
-                        variant='outlined'
-                        onClick={handleGoogleButton}
-                    > 
-                        Ingresar con Google
-                    </Button> */}
+                    <NavLink
+                        to={`/registro`}
+                        style={({ isActive }) =>
+                            ({
+                                color: 'inherit',
+                                background: 'inherit',
+                                textDecoration: 'none'
+                            })
+                        }
+                    >
+                        <Typography
+                            variant='h6'
+                            sx={{
+                                textAlign: "center",
+                                color: "blue"
+                            }}
+                        >
+                            O crea una cuenta con nosotros
+                        </Typography>
+                    </NavLink>
                 </Box>
             </Paper>
     )

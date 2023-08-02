@@ -8,23 +8,32 @@ import {
     Paper, 
     TextField, 
     IconButton,
-    Typography
+    Typography,
+    Grid
 } from "@mui/material"
 
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider'
 import { DatePicker } from '@mui/x-date-pickers/DatePicker'
-import { useContext, useState } from "react"
+import {
+    useContext, 
+    useState 
+} from "react"
 import { useForm } from "react-hook-form"
 import { auth } from "../../utils/firebase.js"
-import { createUserWithEmailAndPassword, signInWithEmailAndPassword, updateProfile } from "firebase/auth"
+import {
+    createUserWithEmailAndPassword, 
+    signInWithEmailAndPassword, 
+    updateProfile 
+} from "firebase/auth"
 import { Context } from "../../context/AuthContext.jsx"
+import { NavLink } from 'react-router-dom'
 
 const RegisterForm = () => {
     const [ visible, setVisible ] = useState(false)
     const [ visibleTwo, setVisibleTwo ] = useState(false)
     const { setUser } = useContext(Context)
-
+    
     const { 
         register,
         handleSubmit, 
@@ -56,7 +65,7 @@ const RegisterForm = () => {
                 console.log(error)
             })
     })
-
+    
     const handlePassword = () => {
         if(visible) {
             setVisible(false)
@@ -74,22 +83,13 @@ const RegisterForm = () => {
     }
     
     return(
-            <Paper sx={{ 
-                height: 1,
+            <Paper 
+            sx={{ 
                 display: "flex",
                 flexDirection: "column",
-                justifyContent: "center"
-            }}>
-                <Typography
-                    variant='h2'
-                    sx={{
-                        textAlign: "left",
-                        mb: 3,
-                        ml:4
-                    }}
-                >
-                    Registrate
-                </Typography>
+                justifyContent: "center",
+            }}> 
+
                 <Box
                     noValidate
                     onSubmit={ onSubmit }
@@ -100,9 +100,19 @@ const RegisterForm = () => {
                         flexDirection: "column",
                     }}
                 >
+                            <Typography
+                                variant='h2'
+                                sx={{
+                                    textAlign: "center",
+                                    mb: 3,
+                                    ml:4,
+                                }}
+                            >
+                                Registrate
+                            </Typography>
                     <Box
                         sx={{
-                            display: "flex"                            
+                            display: "flex"
                         }}
                     >
                         <TextField
@@ -158,9 +168,9 @@ const RegisterForm = () => {
                             sx={{
                                 flexGrow: 1,
                                 mr: 4,
-                                mb: 4
+                                mb: 2
                             }}
-                        />
+                            />
                     </Box>
                     <TextField  
                         {
@@ -187,7 +197,7 @@ const RegisterForm = () => {
                         type={ visible ? "text" : "password"}
                         sx={{
                             mx: 4,
-                            mb: 4,
+                            mb: 2,
                         }}
                         InputProps={{
                             endAdornment: (
@@ -233,7 +243,7 @@ const RegisterForm = () => {
                         type={ visibleTwo ? "text" : "password"}
                         sx={{
                             mx: 4,
-                            mb: 4,
+                            mb: 2,
                         }}
                         InputProps={{
                             endAdornment: (
@@ -246,7 +256,7 @@ const RegisterForm = () => {
                                 </InputAdornment>
                             )
                         }}
-                    />
+                        />
                     <TextField 
                         { 
                             ...register("correo",
@@ -263,17 +273,17 @@ const RegisterForm = () => {
                         label="Correo"
                         sx={{
                             mx: 4,
-                            mb: 4
+                            mb: 2
                         }}
-                    />
+                        />
                     <LocalizationProvider dateAdapter={AdapterDayjs}>
                         <DatePicker  
                             sx={{
                                 mx: 4,
-                                mb: 4
+                                mb: 2,
                             }}
                             onChange= { (newDateValue) => {
-                                    setValue("nacimiento", `${newDateValue.$D}/${newDateValue.$M + 1}/${newDateValue.$y}`)
+                                setValue("nacimiento", `${newDateValue.$D}/${newDateValue.$M + 1}/${newDateValue.$y}`)
                                 } 
                             }
                             name="birthday"
@@ -290,12 +300,32 @@ const RegisterForm = () => {
                             mb: 4,
                         }}
                         size='large'
-                    >
+                        >
                         Enviar
                     </Button>
+                    <NavLink
+                        to={`/login`}
+                        style={({ isActive }) =>
+                        ({
+                                color: 'inherit',
+                                background: 'inherit',
+                                textDecoration: 'none'
+                            })
+                        }
+                    >
+                        <Typography
+                            variant='h6'
+                            sx={{
+                                textAlign: "center",
+                                color: "blue"
+                            }}
+                            >
+                            Si ya tienes una cuenta puedes iniciar sesión
+                        </Typography>
+                    </NavLink>
                 </Box>
             </Paper>
-    )
+                            )
 }
 
 export default RegisterForm
