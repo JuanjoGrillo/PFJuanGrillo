@@ -9,18 +9,21 @@ export const Footer = () => {
             disableGutters
             maxWidth={false}
             sx={{
-                bgcolor: "#2A3439",
+                color: "white",
+                bgcolor: "secondary.main",
                 width: "inherit",
                 height: "auto"
             }}
         >
             <Typography
-                variant="h4"
+                variant="subtitle1"
                 sx={{
-                    textAlign: "center"
+                    textAlign: "left",
+                    lineHeight: "40px",
+                    height: "40px"
                 }}
             >
-                Esto es un footer
+                Aplicación web @curso/react.js
             </Typography>
         </Container>
     )

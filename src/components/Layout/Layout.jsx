@@ -5,7 +5,7 @@ import { useEffect } from "react"
 import { Box, Container, Typography } from "@mui/material"
 import { Footer } from "../Footer/Footer"
 
-const Layout = () => {
+export const Layout = () => {
     const currentPath = useLocation().pathname
     const navigate = useNavigate();
 
@@ -24,7 +24,8 @@ const Layout = () => {
                 m:0,
                 p:0,
                 width:"100%",
-                minHeight: "100vh"
+                minHeight: "100vh",
+                bgcolor: "white"
                 
             }}
         >
@@ -76,5 +77,3 @@ const Layout = () => {
         </Box>        
     )
 }
-
-export default Layout

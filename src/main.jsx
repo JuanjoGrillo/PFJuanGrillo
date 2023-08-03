@@ -1,12 +1,16 @@
+import React from 'react'
+import ReactDOM from 'react-dom/client'
+
+// main css
 import './index.css'
 
+// main fonts 
 import '@fontsource/roboto/300.css'
 import '@fontsource/roboto/400.css'
 import '@fontsource/roboto/500.css'
 import '@fontsource/roboto/700.css'
 
-import React from 'react'
-import ReactDOM from 'react-dom/client'
+// main providers
 import { theme } from './utils/theme'
 import { ThemeProvider } from "@mui/material"
 import { 
@@ -16,15 +20,18 @@ import {
   RouterProvider
 } from 'react-router-dom'
 
+// contexts
 import { AuthContext } from "./context/AuthContext"
 import { CartContext } from './context/CartContext'
-import Layout from './components/Layout/Layout'
-import ItemListContainer from './components/ItemListContainer/ItemListContainer'
+
+// pages
+import { Layout } from './components/Layout/Layout'
+import { ItemListContainer } from './components/ItemListContainer/ItemListContainer'
 import { ItemDetailContainer } from './components/ItemDetailContainer/ItemDetailContainer'
-import Cart from './components/Cart/Cart'
-import ErrorPage from './components/ErrorPage/ErrorPage'
-import RegisterForm from './components/RegisterForm/RegisterForm'
-import LoginForm from './components/LoginForm/LoginForm'
+import { Cart } from './components/Cart/Cart'
+import { ErrorPage } from './components/ErrorPage/ErrorPage'
+import { RegisterForm } from './components/RegisterForm/RegisterForm'
+import { LoginForm } from './components/LoginForm/LoginForm'
 
 
 const route = createBrowserRouter(

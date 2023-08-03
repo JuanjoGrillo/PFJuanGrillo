@@ -28,7 +28,7 @@ import {
 import { ContextAuth } from "../../context/AuthContext.jsx"
 import { NavLink } from 'react-router-dom'
 
-const RegisterForm = () => {
+export const RegisterForm = () => {
     const [ visible, setVisible ] = useState(false)
     const [ visibleTwo, setVisibleTwo ] = useState(false)
     const { setUser } = useContext(ContextAuth)
@@ -325,5 +325,3 @@ const RegisterForm = () => {
             </Box>
                             )
 }
-
-export default RegisterForm

@@ -5,7 +5,7 @@ import { useEffect, useState } from "react"
 import { collection, getDocs } from "firebase/firestore"
 import { Box } from "@mui/material"
 
-const ItemListContainer = () => {
+export const ItemListContainer = () => {
     const { categoria } = useParams()
     const [ products, setProducts ] = useState([])
     const [ loading, setLoading ] = useState(true)
@@ -68,4 +68,3 @@ const ItemListContainer = () => {
     )
 }
 
-export default ItemListContainer

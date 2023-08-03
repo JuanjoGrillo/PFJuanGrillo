@@ -21,7 +21,7 @@ import { signInWithEmailAndPassword } from "firebase/auth"
 import { NavLink } from "react-router-dom"
 import { ContextAuth } from "../../context/AuthContext.jsx"
 
-const LoginForm = () => {
+export const LoginForm = () => {
     const [ visible, setVisible ] = useState(false)
 
     const { 
@@ -175,4 +175,3 @@ const LoginForm = () => {
     )
 }
                         
-export default LoginForm
