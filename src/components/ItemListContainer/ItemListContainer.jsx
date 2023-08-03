@@ -3,7 +3,7 @@ import { ItemList } from "../ItemList/ItemList"
 import { db } from "../../utils/firebase"
 import { useEffect, useState } from "react"
 import { collection, getDocs } from "firebase/firestore"
-import { Box } from "@mui/material"
+import { Box, Typography } from "@mui/material"
 
 export const ItemListContainer = () => {
     const { categoria } = useParams()
@@ -49,7 +49,7 @@ export const ItemListContainer = () => {
         >
             {
                 loading
-                ? "loading"
+                ? <Typography variant="h4" sx={{mx:"auto", mt:6}}>Cargando...</Typography>
                 : products.map(prod => 
                     <ItemList 
                         key={prod.id}

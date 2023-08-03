@@ -26,10 +26,10 @@ export const Cart = () => {
                     stock: newStock
                 })
                 .then(()=>{
-                    setSold(true)
-                    updateCart(list)
                     setItems(list)
+                    updateCart(list)
                     generateTicket(list, user)
+                    setSold(true)
                 })
             })
         }

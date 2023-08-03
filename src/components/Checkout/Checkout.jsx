@@ -37,10 +37,10 @@ export const Checkout = () => {
         }}
           >
             <Typography id="transition-modal-title" variant="h6" component="h2">
-              Text in a modal
+              Gracias por comprar con nosotros!
             </Typography>
             <Typography id="transition-modal-description" sx={{ mt: 2 }}>
-              Duis mollis, est non commodo luctus, nisi erat porttitor ligula.
+              Haga click en cualquier lado para volver a la tienda.
             </Typography>
           </Box>
         </Fade>

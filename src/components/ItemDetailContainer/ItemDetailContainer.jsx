@@ -3,6 +3,7 @@ import { useEffect, useState } from "react"
 import { doc, getDoc } from "firebase/firestore"
 import { useParams } from "react-router-dom"
 import { ItemDetail } from "../ItemDetail/ItemDetail.jsx"
+import { Typography } from "@mui/material"
 
 export const ItemDetailContainer = () => {
     const { id } = useParams()
@@ -37,7 +38,7 @@ export const ItemDetailContainer = () => {
         <>
             {
                 loading
-                    ? "loading"
+                    ? <Typography variant="h4" sx={{mx:"auto", mt:6}}>Cargando...</Typography>
                     : <ItemDetail 
                         title={product.titulo}
                         price={product.precio}
