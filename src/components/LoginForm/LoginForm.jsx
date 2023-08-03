@@ -8,7 +8,8 @@ import {
     Paper, 
     TextField, 
     IconButton,
-    Typography
+    Typography,
+    Container
 } from "@mui/material"
 import { 
     useState,
@@ -50,12 +51,13 @@ const LoginForm = () => {
     }
     
     return(
-            <Paper sx={{ 
-                height: 1,
-                display: "flex",
-                flexDirection: "column",
-                justifyContent: "center"
-            }}>
+        <Box
+            sx={{
+                backgroundColor: "#FFFFFF",
+                flexGrow: 1
+            }}
+        >
+
                 <Typography
                     variant='h2'
                     sx={{
@@ -63,7 +65,7 @@ const LoginForm = () => {
                         mb: 3,
                         ml:4
                     }}
-                >
+                    >
                     Inicia sesión
                 </Typography>
                 <Box
@@ -74,8 +76,9 @@ const LoginForm = () => {
                         width:"100%", 
                         display: "flex",
                         flexDirection: "column",
+                        flexGrow:1,
                     }}
-                >
+                    >
                     <TextField 
                         { 
                             ...register("correo",
@@ -133,7 +136,7 @@ const LoginForm = () => {
                                 </InputAdornment>
                             )
                         }}
-                    />
+                        />
                     <Button
                         endIcon={<SendIcon />}
                         type="submit"
@@ -143,7 +146,7 @@ const LoginForm = () => {
                             mb: 4,
                         }}
                         size='large'
-                    >
+                        >
                         Enviar
                     </Button>
                     <NavLink
@@ -155,20 +158,21 @@ const LoginForm = () => {
                                 textDecoration: 'none'
                             })
                         }
-                    >
+                        >
                         <Typography
                             variant='h6'
                             sx={{
                                 textAlign: "center",
                                 color: "blue"
                             }}
-                        >
+                            >
                             O crea una cuenta con nosotros
                         </Typography>
                     </NavLink>
                 </Box>
-            </Paper>
+            </Box>
+                   
     )
 }
-
+                        
 export default LoginForm

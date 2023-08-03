@@ -1,6 +1,7 @@
 import { Box, Button, ButtonGroup, Container, Paper, Stack, Typography } from "@mui/material"
 import { useState, useContext, useEffect } from "react"
 import { ContextCart } from "../../context/CartContext"
+import { updateCart } from "../../utils/cart"
 
 export const ItemDetail = ({ title, price, image, artist, description, stock, category, id }) => {
     
@@ -24,14 +25,17 @@ export const ItemDetail = ({ title, price, image, artist, description, stock, ca
     }
     const handleAddToCart= (e) => {
         e.preventDefault()
-        const newItems = [...items, {id: id, cantidad: cantidad, precio: price, artista: artist}]
+        const newItems = [...items, {id: id, cantidad: cantidad, precio: price, artista: artist, titulo: title}]
+        updateCart(newItems)
         setItems(newItems)
         setInCart(true)
         setCantidad(0)
+        console.log(newItems)
     }
     const handleRemoveFromCart = () => {
         console.log(items)
         const newItems = items.filter((item) => item.id !== id)
+        updateCart(newItems)
         setItems(newItems)
         setInCart(false)
     }

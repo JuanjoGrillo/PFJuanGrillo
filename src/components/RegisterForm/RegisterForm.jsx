@@ -81,12 +81,12 @@ const RegisterForm = () => {
     }
     
     return(
-            <Paper 
-            sx={{ 
-                display: "flex",
-                flexDirection: "column",
-                justifyContent: "center",
-            }}> 
+        <Box
+        sx={{
+            backgroundColor: "#FFFFFF",
+            flexGrow: 1
+        }}
+    >
 
                 <Box
                     noValidate
@@ -322,7 +322,7 @@ const RegisterForm = () => {
                         </Typography>
                     </NavLink>
                 </Box>
-            </Paper>
+            </Box>
                             )
 }
 

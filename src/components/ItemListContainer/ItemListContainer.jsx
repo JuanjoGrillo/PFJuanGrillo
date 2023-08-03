@@ -10,7 +10,6 @@ const ItemListContainer = () => {
     const [ products, setProducts ] = useState([])
     const [ loading, setLoading ] = useState(true)
 
-    console.log(categoria)
 
     useEffect(()=>{
         const prodsRef = collection(db, "productos")

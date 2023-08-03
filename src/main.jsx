@@ -22,7 +22,6 @@ import Layout from './components/Layout/Layout'
 import ItemListContainer from './components/ItemListContainer/ItemListContainer'
 import { ItemDetailContainer } from './components/ItemDetailContainer/ItemDetailContainer'
 import Cart from './components/Cart/Cart'
-import Checkout from './components/Checkout/Checkout'
 import ErrorPage from './components/ErrorPage/ErrorPage'
 import RegisterForm from './components/RegisterForm/RegisterForm'
 import LoginForm from './components/LoginForm/LoginForm'
@@ -37,7 +36,6 @@ const route = createBrowserRouter(
       <Route path='tienda/:categoria' element={ <ItemListContainer /> } />
       <Route path='tienda/:categoria/:id' element={ <ItemDetailContainer /> } />
       <Route path='carrito' element={ <Cart /> } />
-      <Route path='compra' element={ <Checkout /> } />
       <Route path='*' element={ <ErrorPage /> } />
     </Route>
   )

@@ -6,7 +6,6 @@ import { ContextCart } from '../../context/CartContext';
 
 export const CartWidget = () => {
     const { items } = useContext(ContextCart)
-    console.log(items)
     return(
         <NavLink to="carrito">
             <IconButton sx={{color:"#FFFFFF"}} aria-label="carrito de compras">

@@ -1,40 +1,44 @@
 import { Box, Button, Container, Stack, Typography } from "@mui/material"
-import { useContext } from "react"
 import { ContextCart } from "../../context/CartContext"
 import { NavLink } from "react-router-dom"
 import { doc, getDoc, updateDoc } from "firebase/firestore";
 import { db } from "../../utils/firebase";
+import { Checkout } from "../Checkout/Checkout"
+import { useState } from "react";
+import { generateTicket, updateCart } from "../../utils/cart";
+import { useContext } from "react";
+import { ContextAuth } from "../../context/AuthContext";
 
 const Cart = () => {
     const { items, setItems } = useContext(ContextCart)
-
-    const addPrices = () => {
-        return items.reduce((acc, cv)=>acc + cv.precio * cv.cantidad, 0)
-    }
+    const [ sold, setSold ] = useState(false)
+    const { user } = useContext(ContextAuth)
 
     const handleClick = async () =>{
+        const list = []
         for(let item of items) {
             const docRef = doc(db, "productos", item.id)
             const operation = await getDoc(docRef)
             .then((doc)=>{
-                console.log("antes"+doc.data().stock)
+                list.push({...doc.data(),cantidad:item.cantidad})
                 const newStock = doc.data().stock - item.cantidad
                 updateDoc(docRef, {
                     stock: newStock
-                }).then(()=>{
-                    getDoc(docRef)
-                    .then((doc)=>{
-                        console.log("despues"+doc.data().stock)
-                        const precioFinal = addPrices()
-                        console.log("Gracias por tu compra! te salio unos "+precioFinal)
-                        setItems([])
-                    })
+                })
+                .then(()=>{
+                    setSold(true)
+                    updateCart(list)
+                    setItems(list)
+                    generateTicket(list, user)
                 })
             })
         }
     }
 
-    return(
+    return( 
+        sold 
+        ? <Checkout />
+        :
         <Container
             disableGutters
             maxWidth={false}
