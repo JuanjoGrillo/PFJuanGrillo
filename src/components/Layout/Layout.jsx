@@ -22,9 +22,10 @@ const Layout = () => {
             sx={{
                 mx: 0,
                 width: "autp",
-                height: "100vh",
+                minHeight: "100vh",
                 display: "flex",
-                flexDirection: "column"
+                flexDirection: "column",
+                flexGrow: 1
             }}
         >
             <NavBar />

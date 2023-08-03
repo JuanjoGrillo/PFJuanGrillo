@@ -1,5 +1,5 @@
 import { useState, useContext } from "react"
-import { Context } from "../../context/AuthContext"
+import { ContextAuth } from "../../context/AuthContext"
 import { signOut } from "firebase/auth"
 import { auth } from "../../utils/firebase.js"
 import { deepOrange } from '@mui/material/colors';
@@ -19,14 +19,17 @@ import {
     Avatar
   } from "@mui/material"
   import { NavLink } from "react-router-dom";
+import { ContextCart } from "../../context/CartContext";
+import { CartWidget } from "../CartWidget/CartWidget";
   
-  const pages = ['Tienda', 'Rock', 'Pop', 'Jazz']
+  const pages = ['tienda', 'rock', 'pop', 'jazz']
   const settings = [ 'Ver perfil', 'Cambiar cuenta', 'Cerrar sesión']
   
 const NavBar = () => {
-    const { user } = useContext(Context)
+    const { user } = useContext(ContextAuth)
     const [anchorElNav, setAnchorElNav] = useState(null)
     const [anchorElUser, setAnchorElUser] = useState(null)
+    const { items } = useContext(ContextCart)
 
     const handleSignOut = () => {
         signOut(auth)
@@ -59,13 +62,23 @@ const NavBar = () => {
             <Container maxWidth="xl">
                 <Toolbar disableGutters>
                     <AlbumIcon sx={{ display: { xs: 'none', md: 'flex' }, mr: 1 }} />
+                    <NavLink
+                                to="/registro"
+                                replace="true"
+                                style={({ isActive }) =>
+                                  ({
+                                      color: 'inherit',
+                                      background: 'inherit',
+                                      textDecoration: 'none'
+                                    })
+                                }
+                            >
                     <Typography
-                        variant="h6"
+                    onClick={()=>console.log(items)}
+                    variant="h6"
                         noWrap
-                        component="a"
-                        href="/"
                         sx={{
-                        mr: 2,
+                            mr: 2,
                         display: { xs: 'none', md: 'flex' },
                         fontFamily: 'monospace',
                         fontWeight: 700,
@@ -76,6 +89,7 @@ const NavBar = () => {
                     >
                         DISQUERIA
                     </Typography>
+                        </NavLink>
                     <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
                         <IconButton
                             size="large"
@@ -139,7 +153,11 @@ const NavBar = () => {
                                     sx={{ my: 2, color: 'white', display: 'block' }}
                                     >
                             <NavLink
-                                to={`/${page}`}
+                                replace="true"
+                                to={ page === "tienda"
+                                    ? `${page}`
+                                    : `tienda/${page}`
+                                }
                                 style={({ isActive }) =>
                                   ({
                                       color: 'inherit',
@@ -153,6 +171,7 @@ const NavBar = () => {
                             </Button>
                         ))}
                     </Box>
+                    <CartWidget />
                     {   user && <Box sx={{ flexGrow: 0 }}>
                             <Tooltip title="Open settings">
                                 <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>

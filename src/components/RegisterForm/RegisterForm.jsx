@@ -9,7 +9,6 @@ import {
     TextField, 
     IconButton,
     Typography,
-    Grid
 } from "@mui/material"
 
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
@@ -26,14 +25,13 @@ import {
     signInWithEmailAndPassword, 
     updateProfile 
 } from "firebase/auth"
-import { Context } from "../../context/AuthContext.jsx"
+import { ContextAuth } from "../../context/AuthContext.jsx"
 import { NavLink } from 'react-router-dom'
 
 const RegisterForm = () => {
     const [ visible, setVisible ] = useState(false)
     const [ visibleTwo, setVisibleTwo ] = useState(false)
-    const { setUser } = useContext(Context)
-    
+    const { setUser } = useContext(ContextAuth)
     const { 
         register,
         handleSubmit, 

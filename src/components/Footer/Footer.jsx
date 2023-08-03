@@ -1,6 +1,9 @@
 import { Container, Typography } from "@mui/material"
+import { useContext } from "react"
+import { ContextCart } from "../../context/CartContext"
 
 export const Footer = () => {
+
     return(
         <Container
             disableGutters

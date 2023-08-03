@@ -18,7 +18,7 @@ import { useForm } from "react-hook-form"
 import { auth } from '../../utils/firebase.js'
 import { signInWithEmailAndPassword } from "firebase/auth"
 import { NavLink } from "react-router-dom"
-import { Context } from "../../context/AuthContext.jsx"
+import { ContextAuth } from "../../context/AuthContext.jsx"
 
 const LoginForm = () => {
     const [ visible, setVisible ] = useState(false)
@@ -29,13 +29,12 @@ const LoginForm = () => {
         reset,
         formState: { errors }, 
     } = useForm();
-    const { user } = useContext(Context)
+    const { user } = useContext(ContextAuth)
 
     const onSubmit = handleSubmit((data) => {
         signInWithEmailAndPassword(auth, data.correo, data.contraseña)
             .then(() => {
                 reset()
-                console.log(user.email)
             })
             .catch((error) => {
                 console.log(error)

@@ -7,29 +7,26 @@ import {
     Button,
     Box
 } from "@mui/material"
-import { useNavigate } from "react-router-dom"
+import { NavLink, useParams } from "react-router-dom"
+import { ContextAuth } from "../../context/AuthContext"
+import { useContext } from "react"
 
-export const ItemList = () => {
-    const navigate = useNavigate()
-
-    const handleClickEvent = () => {
-        navigate("rock/1234")
-    }   
-
+export const ItemList = ({ category, stock, price, title, artist, description, image, id }) => {
+    const {categoria} = useParams()
+    const { user } = useContext(ContextAuth)
     return(
         <Card sx={{ maxWidth: 345 }}>
             <CardMedia
                 sx={{ height: 140 }}
                 image="../../public/img.jpg"
-                title="green iguana"
+                title={title}
             />
             <CardContent>
                 <Typography gutterBottom variant="h5" component="div">
-                Lizard
+                {title}
                 </Typography>
                 <Typography variant="body2" color="text.secondary">
-                Lizards are a widespread group of squamate reptiles, with over 6,000
-                species, ranging across all continents except Antarctica
+                    {description}
                 </Typography>
             </CardContent>
             <CardActions>
@@ -48,19 +45,25 @@ export const ItemList = () => {
                             mb: 1
                         }}
                     >
-                        Stock disponible 30
+                        Stock disponible: <span style={{fontWeight: "bolder"}}>{stock}</span>
                     </Typography>
-                    <Button 
-                        variant="outlined"
-                        size="small"
-                        sx={{
-                            mr: 2,
-                            mb: 1
-                        }}
-                        onClick={handleClickEvent}
-                    >
-                        Detalle
-                    </Button>
+                    {   
+                        user
+                        && <Button 
+                            variant="outlined"
+                            size="small"
+                            sx={{
+                                mr: 2,
+                                mb: 1
+                            }}
+                            >        
+                            <NavLink
+                                to={categoria ? `${id}` : `${category}}/${id}`}
+                            >
+                                Ver en detalle
+                            </NavLink>                
+                            </Button>
+                    }
                 </Box>
             </CardActions>
         </Card>

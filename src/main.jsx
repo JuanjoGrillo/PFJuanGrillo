@@ -17,9 +17,10 @@ import {
 } from 'react-router-dom'
 
 import { AuthContext } from "./context/AuthContext"
+import { CartContext } from './context/CartContext'
 import Layout from './components/Layout/Layout'
 import ItemListContainer from './components/ItemListContainer/ItemListContainer'
-import ItemDetail from './components/ItemDetail/ItemDetail'
+import { ItemDetailContainer } from './components/ItemDetailContainer/ItemDetailContainer'
 import Cart from './components/Cart/Cart'
 import Checkout from './components/Checkout/Checkout'
 import ErrorPage from './components/ErrorPage/ErrorPage'
@@ -34,7 +35,7 @@ const route = createBrowserRouter(
       <Route path="registro" element={ <RegisterForm /> } />
       <Route path='tienda' element={ <ItemListContainer /> } />
       <Route path='tienda/:categoria' element={ <ItemListContainer /> } />
-      <Route path='tienda/:categoria/:id' element={ <ItemDetail /> } />
+      <Route path='tienda/:categoria/:id' element={ <ItemDetailContainer /> } />
       <Route path='carrito' element={ <Cart /> } />
       <Route path='compra' element={ <Checkout /> } />
       <Route path='*' element={ <ErrorPage /> } />
@@ -46,7 +47,9 @@ ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
     <ThemeProvider theme={theme}>
       <AuthContext>
-        <RouterProvider router={route} />
+        <CartContext>
+          <RouterProvider router={route} />
+        </CartContext>
       </AuthContext>
     </ThemeProvider>
   </React.StrictMode>,
